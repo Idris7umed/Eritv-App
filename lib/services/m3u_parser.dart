@@ -2,8 +2,13 @@ import 'package:http/http.dart' as http;
 import '../models/channel.dart';
 
 class M3UParser {
-  static const String m3uUrl = 
+  // Default M3U playlist URL - can be configured if needed
+  static const String defaultM3uUrl = 
       'https://raw.githubusercontent.com/Idris7umed/iptv/master/streams/er.m3u';
+
+  final String m3uUrl;
+
+  M3UParser({this.m3uUrl = defaultM3uUrl});
 
   Future<List<Channel>> fetchChannels() async {
     try {

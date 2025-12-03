@@ -9,7 +9,7 @@ class NewsScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.article_outlined,
             size: 80,
             color: Colors.white24,

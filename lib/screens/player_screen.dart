@@ -14,7 +14,7 @@ class PlayerScreen extends StatefulWidget {
 }
 
 class _PlayerScreenState extends State<PlayerScreen> {
-  late VideoPlayerController _videoPlayerController;
+  VideoPlayerController? _videoPlayerController;
   ChewieController? _chewieController;
   bool _isLoading = true;
   String? _error;
@@ -26,6 +26,10 @@ class _PlayerScreenState extends State<PlayerScreen> {
   }
 
   Future<void> _initializePlayer() async {
+    // Dispose existing controllers if any
+    await _videoPlayerController?.dispose();
+    _chewieController?.dispose();
+    
     try {
       _videoPlayerController = VideoPlayerController.networkUrl(
         Uri.parse(widget.channel.url),
@@ -80,13 +84,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton.icon(
-                  onPressed: () {
-                    setState(() {
-                      _isLoading = true;
-                      _error = null;
-                    });
-                    _initializePlayer();
-                  },
+                  onPressed: _retryInitialization,
                   icon: const Icon(Icons.refresh),
                   label: const Text('Retry'),
                 ),
@@ -107,9 +105,17 @@ class _PlayerScreenState extends State<PlayerScreen> {
     }
   }
 
+  void _retryInitialization() {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    _initializePlayer();
+  }
+
   @override
   void dispose() {
-    _videoPlayerController.dispose();
+    _videoPlayerController?.dispose();
     _chewieController?.dispose();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -167,13 +173,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                       ),
                       const SizedBox(height: 24),
                       ElevatedButton.icon(
-                        onPressed: () {
-                          setState(() {
-                            _isLoading = true;
-                            _error = null;
-                          });
-                          _initializePlayer();
-                        },
+                        onPressed: _retryInitialization,
                         icon: const Icon(Icons.refresh),
                         label: const Text('Retry'),
                       ),
