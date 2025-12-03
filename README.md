@@ -27,6 +27,10 @@ The app features:
 
 ## Getting Started
 
+### Quick Start
+
+New to Flutter? Check out our **[Quick Start Guide](QUICKSTART.md)** for step-by-step instructions!
+
 ### Prerequisites
 
 - Flutter SDK (3.0.0 or higher)
@@ -50,6 +54,8 @@ flutter pub get
 ```bash
 flutter run
 ```
+
+For detailed setup instructions, see [SETUP.md](SETUP.md)
 
 ## Dependencies
 
