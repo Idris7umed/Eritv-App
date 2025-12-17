@@ -150,10 +150,10 @@ class _PlayerScreenState extends State<PlayerScreen> with WidgetsBindingObserver
         Uri.parse(widget.channel.url),
       );
 
-      await _videoPlayerController.initialize();
+      await _videoPlayerController!.initialize();
 
       _chewieController = ChewieController(
-        videoPlayerController: _videoPlayerController,
+        videoPlayerController: _videoPlayerController!,
         autoPlay: true,
         looping: false,
         allowFullScreen: true,
