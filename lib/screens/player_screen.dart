@@ -98,13 +98,13 @@ class _PlayerScreenState extends State<PlayerScreen> with WidgetsBindingObserver
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: const Color(0xFF1E1E1E),
-          title: const Row(
+          title: Row(
             children: [
-              Icon(Icons.cast, color: Colors.white),
-              SizedBox(width: 8),
+              const Icon(Icons.cast, color: Colors.white),
+              const SizedBox(width: 8),
               Text(
-                'Cast to Device',
-                style: TextStyle(color: Colors.white),
+                l10n?.castToDevice ?? 'Cast to Device',
+                style: const TextStyle(color: Colors.white),
               ),
             ],
           ),
@@ -112,13 +112,15 @@ class _PlayerScreenState extends State<PlayerScreen> with WidgetsBindingObserver
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'Chromecast functionality is available but requires Google Play Services to be fully configured.',
+                l10n?.chromecastInfo ?? 
+                    'Chromecast functionality is available but requires Google Play Services to be fully configured.',
                 style: const TextStyle(color: Colors.white70),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
               Text(
-                'This feature will be fully enabled in a future update.',
+                l10n?.chromecastFuture ?? 
+                    'This feature will be fully enabled in a future update.',
                 style: const TextStyle(color: Colors.white60, fontSize: 12),
                 textAlign: TextAlign.center,
               ),
@@ -128,7 +130,7 @@ class _PlayerScreenState extends State<PlayerScreen> with WidgetsBindingObserver
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
-                l10n?.retry ?? 'OK',
+                l10n?.ok ?? 'OK',
                 style: TextStyle(color: Theme.of(context).primaryColor),
               ),
             ),

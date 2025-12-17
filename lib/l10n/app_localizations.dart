@@ -42,6 +42,10 @@ class AppLocalizations {
       'share': 'Share',
       'published': 'Published',
       'source': 'Source',
+      'cast_to_device': 'Cast to Device',
+      'chromecast_info': 'Chromecast functionality is available but requires Google Play Services to be fully configured.',
+      'chromecast_future': 'This feature will be fully enabled in a future update.',
+      'ok': 'OK',
     },
     'ti': {
       'app_title': 'ERi-TV',
@@ -71,6 +75,10 @@ class AppLocalizations {
       'share': 'ኣካፍል',
       'published': 'ዝተዓተመ',
       'source': 'ምንጪ',
+      'cast_to_device': 'ናብ መሳርሒ ስደድ',
+      'chromecast_info': 'Chromecast ተግባር ኣሎ ግን ጉግል ፕለይ ሰርቪስ ምምልማል የድሊ።',
+      'chromecast_future': 'እዚ ባህሪ ኣብ መጻኢ ምዕባለ ምሉእ ብምሉእ ክንቀጸል እዩ።',
+      'ok': 'እወ',
     },
     'ar': {
       'app_title': 'ERi-TV',
@@ -100,6 +108,10 @@ class AppLocalizations {
       'share': 'مشاركة',
       'published': 'تاريخ النشر',
       'source': 'المصدر',
+      'cast_to_device': 'البث إلى الجهاز',
+      'chromecast_info': 'وظيفة Chromecast متاحة ولكنها تتطلب تكوين خدمات Google Play بشكل كامل.',
+      'chromecast_future': 'سيتم تفعيل هذه الميزة بالكامل في تحديث مستقبلي.',
+      'ok': 'حسناً',
     },
   };
 
@@ -135,6 +147,10 @@ class AppLocalizations {
   String get share => translate('share');
   String get published => translate('published');
   String get source => translate('source');
+  String get castToDevice => translate('cast_to_device');
+  String get chromecastInfo => translate('chromecast_info');
+  String get chromecastFuture => translate('chromecast_future');
+  String get ok => translate('ok');
 }
 
 class _AppLocalizationsDelegate

@@ -6,12 +6,19 @@ class NewsService {
   factory NewsService() => _instance;
   NewsService._internal();
 
-  // Sample news data - in a real app, this would fetch from an API
+  /// Fetches news articles for the specified language
+  /// 
+  /// Currently returns sample data. In production, this should:
+  /// - Fetch from a REST API or RSS feed
+  /// - Use a data repository pattern for better separation
+  /// - Implement caching for offline support
+  /// - Handle pagination for large datasets
   Future<List<NewsArticle>> fetchNews({String language = 'en'}) async {
     // Simulate network delay
     await Future.delayed(const Duration(seconds: 1));
 
     // Return sample news articles based on language
+    // TODO: Replace with actual API call in production
     return _getSampleNews(language);
   }
 

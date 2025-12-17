@@ -57,9 +57,9 @@ class MainActivity: FlutterActivity() {
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CAST_CHANNEL).setMethodCallHandler { call, result ->
             when (call.method) {
                 "isChromecastAvailable" -> {
-                    // Chromecast requires Google Play Services which we can't easily check
-                    // For now, return true on Android devices
-                    result.success(true)
+                    // Chromecast requires Google Play Services and Cast SDK
+                    // Return false until fully implemented
+                    result.success(false)
                 }
                 "showDevicePicker" -> {
                     // This would require implementing the Google Cast SDK
