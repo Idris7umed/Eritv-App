@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import '../models/channel.dart';
+import '../l10n/app_localizations.dart';
 
 class PlayerScreen extends StatefulWidget {
   final Channel channel;
@@ -22,7 +24,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
   @override
   void initState() {
     super.initState();
+    _enableWakelock();
     _initializePlayer();
+  }
+
+  Future<void> _enableWakelock() async {
+    await WakelockPlus.enable();
   }
 
   Future<void> _initializePlayer() async {
@@ -117,6 +124,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
   void dispose() {
     _videoPlayerController?.dispose();
     _chewieController?.dispose();
+    WakelockPlus.disable();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -125,6 +133,8 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -132,15 +142,15 @@ class _PlayerScreenState extends State<PlayerScreen> {
         backgroundColor: Colors.black.withOpacity(0.5),
       ),
       body: _isLoading
-          ? const Center(
+          ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16),
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 16),
                   Text(
-                    'Initializing player...',
-                    style: TextStyle(color: Colors.white70),
+                    l10n?.initializingPlayer ?? 'Initializing player...',
+                    style: const TextStyle(color: Colors.white70),
                   ),
                 ],
               ),
@@ -157,7 +167,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Error loading stream',
+                        l10n?.errorLoadingStream ?? 'Error loading stream',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               color: Colors.white,
                             ),
@@ -175,17 +185,17 @@ class _PlayerScreenState extends State<PlayerScreen> {
                       ElevatedButton.icon(
                         onPressed: _retryInitialization,
                         icon: const Icon(Icons.refresh),
-                        label: const Text('Retry'),
+                        label: Text(l10n?.retry ?? 'Retry'),
                       ),
                     ],
                   ),
                 )
               : _chewieController != null
                   ? Chewie(controller: _chewieController!)
-                  : const Center(
+                  : Center(
                       child: Text(
-                        'Unable to load player',
-                        style: TextStyle(color: Colors.white70),
+                        l10n?.errorLoadingStream ?? 'Unable to load player',
+                        style: const TextStyle(color: Colors.white70),
                       ),
                     ),
     );
