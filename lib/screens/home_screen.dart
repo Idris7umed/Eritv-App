@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import '../models/channel.dart';
 import '../services/m3u_parser.dart';
+import '../services/favorites_service.dart';
+import '../l10n/app_localizations.dart';
 import 'player_screen.dart';
 import 'news_screen.dart';
+import 'favorites_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Locale currentLocale;
+  final Function(Locale) onLocaleChange;
+
+  const HomeScreen({
+    super.key,
+    required this.currentLocale,
+    required this.onLocaleChange,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -13,7 +24,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final M3UParser _parser = M3UParser();
+  final FavoritesService _favoritesService = FavoritesService();
   List<Channel>? _channels;
+  Set<String> _favoriteIds = {};
   bool _isLoading = true;
   String? _error;
   int _selectedIndex = 0;
@@ -22,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadChannels();
+    _loadFavorites();
   }
 
   Future<void> _loadChannels() async {
@@ -44,17 +58,31 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> _loadFavorites() async {
+    final favoriteIds = await _favoritesService.getFavoriteChannelIds();
+    setState(() {
+      _favoriteIds = favoriteIds.toSet();
+    });
+  }
+
+  Future<void> _toggleFavorite(String channelId) async {
+    await _favoritesService.toggleFavoriteChannel(channelId);
+    await _loadFavorites();
+  }
+
   Widget _buildChannelsList() {
+    final l10n = AppLocalizations.of(context);
+
     if (_isLoading) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 16),
+            const CircularProgressIndicator(),
+            const SizedBox(height: 16),
             Text(
-              'Loading channels...',
-              style: TextStyle(color: Colors.white70),
+              l10n?.loadingChannels ?? 'Loading channels...',
+              style: const TextStyle(color: Colors.white70),
             ),
           ],
         ),
@@ -73,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Error loading channels',
+              l10n?.errorLoadingChannels ?? 'Error loading channels',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Colors.white,
                   ),
@@ -91,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ElevatedButton.icon(
               onPressed: _loadChannels,
               icon: const Icon(Icons.refresh),
-              label: const Text('Retry'),
+              label: Text(l10n?.retry ?? 'Retry'),
             ),
           ],
         ),
@@ -99,10 +127,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     if (_channels == null || _channels!.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'No channels available',
-          style: TextStyle(color: Colors.white70),
+          l10n?.noChannelsAvailable ?? 'No channels available',
+          style: const TextStyle(color: Colors.white70),
         ),
       );
     }
@@ -114,6 +142,8 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: _channels!.length,
         itemBuilder: (context, index) {
           final channel = _channels![index];
+          final isFavorite = _favoriteIds.contains(channel.id);
+          
           return Card(
             margin: const EdgeInsets.only(bottom: 12),
             child: ListTile(
@@ -149,10 +179,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 12,
                 ),
               ),
-              trailing: const Icon(
-                Icons.play_circle_fill,
-                color: Colors.blue,
-                size: 32,
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorite ? Colors.red : Colors.white60,
+                    ),
+                    onPressed: () => _toggleFavorite(channel.id),
+                  ),
+                  const Icon(
+                    Icons.play_circle_fill,
+                    color: Colors.blue,
+                    size: 32,
+                  ),
+                ],
               ),
               onTap: () {
                 Navigator.push(
@@ -171,13 +213,28 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ERi-TV'),
+        title: Text(l10n?.appTitle ?? 'ERi-TV'),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _selectedIndex == 0 ? _loadChannels : null,
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SettingsScreen(
+                    onLocaleChange: widget.onLocaleChange,
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -185,7 +242,10 @@ class _HomeScreenState extends State<HomeScreen> {
         index: _selectedIndex,
         children: [
           _buildChannelsList(),
-          const NewsScreen(),
+          NewsScreen(currentLanguage: widget.currentLocale.languageCode),
+          _channels != null
+              ? FavoritesScreen(allChannels: _channels!)
+              : const Center(child: CircularProgressIndicator()),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -194,18 +254,25 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             _selectedIndex = index;
           });
+          if (index == 2) {
+            _loadFavorites(); // Reload favorites when switching to favorites tab
+          }
         },
         backgroundColor: const Color(0xFF1E1E1E),
         selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Colors.white60,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.live_tv),
-            label: 'Live TV',
+            icon: const Icon(Icons.live_tv),
+            label: l10n?.liveTV ?? 'Live TV',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.article),
-            label: 'News',
+            icon: const Icon(Icons.article),
+            label: l10n?.news ?? 'News',
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.favorite),
+            label: l10n?.favorites ?? 'Favorites',
           ),
         ],
       ),

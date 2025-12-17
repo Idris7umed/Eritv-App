@@ -26,23 +26,58 @@
 - Loading states and error handling
 
 ### 4. News Section
-- Placeholder screen for upcoming news feature
-- "Coming Soon" indicator
-- Integrated in bottom navigation
+- Real news articles with images
+- Multi-language news support (EN, TI, AR)
+- Article detail view with full content
+- Bookmarking functionality
+- Separate tab for bookmarked articles
+- Pull-to-refresh for latest news
+- Date and source information
 
 ### 5. User Interface
 - Modern dark theme for better viewing experience
 - Material Design components
 - Responsive layout
 - Smooth animations and transitions
-- Bottom navigation for easy section switching
-- App bar with refresh functionality
+- Bottom navigation with 3 tabs (Live TV, News, Favorites)
+- App bar with refresh and settings icons
+- Localized UI in Tigrinya, Arabic, and English
 
-### 6. Error Handling
+### 6. Favorites and Bookmarks
+- Save favorite channels for quick access
+- Heart icon to toggle favorites
+- Dedicated favorites tab
+- Bookmark news articles
+- Persistent storage using SharedPreferences
+- Real-time updates when adding/removing favorites
+
+### 7. Multi-Language Support
+- Three languages: English, Tigrinya (ትግርኛ), Arabic (العربية)
+- Settings screen for language selection
+- All UI elements localized
+- News content in selected language
+- Persistent language preference
+
+### 8. Picture-in-Picture Mode
+- Android PiP support (API 26+)
+- PiP button in video player
+- Continue watching while using other apps
+- Automatic aspect ratio (16:9)
+- Lifecycle-aware implementation
+
+### 9. Chromecast Support
+- Framework for casting videos
+- Cast button in video player
+- Google Cast SDK integration ready
+- Informational dialog for users
+- Future-ready implementation
+
+### 10. Error Handling
 - Network error handling
 - Stream loading errors
 - User-friendly error messages
 - Retry functionality throughout the app
+- Graceful fallbacks for missing data
 
 ## Technical Implementation
 
@@ -53,46 +88,61 @@
 - **Widgets**: Reusable UI components (can be extended)
 
 ### Dependencies
-- `http`: For fetching M3U playlist from GitHub
+- `http`: For fetching M3U playlist and news
 - `video_player`: Core video playback functionality
 - `chewie`: Enhanced video player with controls
 - `flutter_spinkit`: Loading animations
+- `shared_preferences`: Local data persistence
+- `flutter_localizations`: Multi-language support
+- `intl`: Date formatting and internationalization
+- `wakelock_plus`: Keep screen on during video playback
 
 ### Platform Support
 - **Android**: Minimum SDK 21 (Android 5.0)
 - **iOS**: iOS 11.0+
 - Internet permission configured for streaming
 
+## Implemented Features ✅
+
+1. **News Integration** ✅
+   - News articles with images
+   - Multi-language news content
+   - Article detail view
+   - Bookmarking functionality
+   - Tab-based organization
+
+2. **Favorites** ✅
+   - Save favorite channels
+   - Quick access via favorites tab
+   - Persistent local storage
+   - Add/remove with heart icon
+
+3. **Multiple Languages** ✅
+   - Tigrinya (ትግርኛ)
+   - Arabic (العربية)
+   - English
+   - Full UI localization
+   - Settings for language change
+
+4. **Advanced Video Features** ✅
+   - Picture-in-picture mode (Android)
+   - Chromecast framework
+   - Wakelock support
+   - Lifecycle management
+
 ## Future Enhancements
 
 ### Planned Features
-1. **News Integration**
-   - Fetch news from RSS feeds or API
-   - Article view with images
-   - Share functionality
-   - Bookmarking
-
-2. **EPG (Electronic Program Guide)**
+1. **EPG (Electronic Program Guide)**
    - Schedule display
    - Program information
    - Reminders
 
-3. **Favorites**
-   - Save favorite channels
-   - Quick access to favorites
-   - Persist using local storage
-
-4. **Multiple Languages**
-   - Tigrinya
-   - Arabic
-   - English
-   - Localization support
-
-5. **Advanced Video Features**
-   - Picture-in-picture mode
+2. **Advanced Video Features**
    - Quality selection
    - Playback speed control
-   - Chromecast support
+   - Full Google Cast SDK integration
+   - iOS PiP support
 
 6. **Social Features**
    - Share channels/programs

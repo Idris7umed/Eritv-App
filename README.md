@@ -8,8 +8,13 @@ A Flutter application for streaming Eritrean TV channels live from ERi-TV.
 - 🎬 **Video Player**: Full-featured video player with playback controls
 - 📱 **Responsive Design**: Works seamlessly on both portrait and landscape modes
 - 🌙 **Dark Theme**: Modern dark-themed UI for better viewing experience
-- 📰 **News Section**: Placeholder for upcoming news feature
-- 🔄 **Pull to Refresh**: Easy refresh of channel listings
+- 📰 **News Articles**: Browse news articles and updates with bookmarking support
+- 🌐 **Multi-Language Support**: Available in Tigrinya, Arabic, and English
+- ⭐ **Favorites**: Save and manage your favorite channels
+- 📑 **Bookmarks**: Bookmark news articles for later reading
+- 🖼️ **Picture-in-Picture**: Watch videos while using other apps (Android)
+- 📡 **Chromecast Ready**: Framework for casting to Chromecast devices
+- 🔄 **Pull to Refresh**: Easy refresh of channel listings and news
 - ⚡ **Fast Loading**: Efficient M3U parsing and streaming
 
 ## Channel Source
@@ -61,23 +66,38 @@ For detailed setup instructions, see [SETUP.md](SETUP.md)
 
 - **video_player**: Video playback functionality
 - **chewie**: Enhanced video player with controls
-- **http**: HTTP requests for fetching M3U playlist
+- **http**: HTTP requests for fetching M3U playlist and news
 - **flutter_spinkit**: Loading animations
+- **shared_preferences**: Local storage for favorites and settings
+- **flutter_localizations**: Multi-language support
+- **intl**: Internationalization and date formatting
+- **wakelock_plus**: Keep screen awake during video playback
 
 ## Project Structure
 
 ```
 lib/
-├── main.dart                 # App entry point
+├── main.dart                      # App entry point with localization
 ├── models/
-│   └── channel.dart         # Channel data model
+│   ├── channel.dart              # Channel data model
+│   └── news_article.dart         # News article data model
 ├── services/
-│   └── m3u_parser.dart      # M3U playlist parser
+│   ├── m3u_parser.dart           # M3U playlist parser
+│   ├── news_service.dart         # News fetching service
+│   ├── favorites_service.dart    # Favorites and bookmarks management
+│   ├── localization_service.dart # Language preference management
+│   ├── pip_service.dart          # Picture-in-Picture support
+│   └── chromecast_service.dart   # Chromecast integration
 ├── screens/
-│   ├── home_screen.dart     # Main screen with channel list
-│   ├── player_screen.dart   # Video player screen
-│   └── news_screen.dart     # News section (coming soon)
-└── widgets/                 # Reusable widgets (if needed)
+│   ├── home_screen.dart          # Main screen with navigation
+│   ├── player_screen.dart        # Video player with PiP and Cast
+│   ├── news_screen.dart          # News articles with bookmarks
+│   ├── news_detail_screen.dart   # Individual article view
+│   ├── favorites_screen.dart     # Favorite channels list
+│   └── settings_screen.dart      # App settings and language selection
+├── l10n/
+│   └── app_localizations.dart    # Translations (EN, TI, AR)
+└── widgets/                      # Reusable widgets
 ```
 
 ## Building for Release
@@ -92,16 +112,24 @@ flutter build apk --release
 flutter build ios --release
 ```
 
+## Completed Features
+
+- [x] News articles and updates
+- [x] Multiple language support (Tigrinya, Arabic, English)
+- [x] Favorites and bookmarks
+- [x] Picture-in-picture mode (Android)
+- [x] Chromecast support (Framework ready)
+
 ## Future Features
 
-- [ ] News articles and updates
-- [ ] Multiple language support (Tigrinya, Arabic, English)
 - [ ] EPG (Electronic Program Guide)
-- [ ] Favorites and bookmarks
-- [ ] Picture-in-picture mode
-- [ ] Chromecast support
+- [ ] Full Google Cast SDK integration
+- [ ] iOS Picture-in-Picture support
 - [ ] Social media integration
 - [ ] Push notifications for live events
+- [ ] Download news for offline reading
+- [ ] Video quality selection
+- [ ] Playback speed control
 
 ## Contributing
 
