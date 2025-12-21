@@ -96,7 +96,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             subtitle: _currentThemeMode != null
                 ? Text(
-                    _themeService.getThemeModeName(_currentThemeMode!),
+                    _themeService.getThemeModeName(
+                      _currentThemeMode!,
+                      lightLabel: l10n?.light,
+                      darkLabel: l10n?.dark,
+                      systemLabel: l10n?.system,
+                    ),
                     style: TextStyle(color: isDark ? Colors.white60 : Colors.black54),
                   )
                 : null,
@@ -172,18 +177,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             mainAxisSize: MainAxisSize.min,
             children: themeModes.map((mode) {
               final isSelected = _currentThemeMode == mode;
-              String themeName;
-              switch (mode) {
-                case ThemeMode.light:
-                  themeName = l10n?.light ?? 'Light';
-                  break;
-                case ThemeMode.dark:
-                  themeName = l10n?.dark ?? 'Dark';
-                  break;
-                case ThemeMode.system:
-                  themeName = l10n?.system ?? 'System';
-                  break;
-              }
+              final themeName = _themeService.getThemeModeName(
+                mode,
+                lightLabel: l10n?.light,
+                darkLabel: l10n?.dark,
+                systemLabel: l10n?.system,
+              );
               
               return ListTile(
                 title: Text(

@@ -14,7 +14,9 @@ class ThemeService {
     final themeModeString = prefs.getString(_themeKey);
     
     if (themeModeString == null) {
-      return ThemeMode.dark; // Default to dark mode as per current implementation
+      // Default to dark mode to maintain consistency with the original app design
+      // which was built with a dark theme in mind
+      return ThemeMode.dark;
     }
     
     switch (themeModeString) {
@@ -48,14 +50,14 @@ class ThemeService {
     await prefs.setString(_themeKey, themeModeString);
   }
 
-  String getThemeModeName(ThemeMode mode) {
+  String getThemeModeName(ThemeMode mode, {String? lightLabel, String? darkLabel, String? systemLabel}) {
     switch (mode) {
       case ThemeMode.light:
-        return 'Light';
+        return lightLabel ?? 'Light';
       case ThemeMode.dark:
-        return 'Dark';
+        return darkLabel ?? 'Dark';
       case ThemeMode.system:
-        return 'System';
+        return systemLabel ?? 'System';
     }
   }
 }

@@ -55,24 +55,28 @@ class _HomeScreenState extends State<HomeScreen> {
       });
       
       // Auto-play the first channel when app opens
-      if (!_hasAutoPlayed && channels.isNotEmpty && mounted) {
-        _hasAutoPlayed = true;
-        // Use WidgetsBinding to ensure the first frame is built before navigating
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PlayerScreen(channel: channels[0]),
-              ),
-            );
-          }
-        });
-      }
+      _handleAutoPlay(channels);
     } catch (e) {
       setState(() {
         _error = e.toString();
         _isLoading = false;
+      });
+    }
+  }
+
+  void _handleAutoPlay(List<Channel> channels) {
+    if (!_hasAutoPlayed && channels.isNotEmpty && mounted) {
+      _hasAutoPlayed = true;
+      // Use WidgetsBinding to ensure the first frame is built before navigating
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PlayerScreen(channel: channels[0]),
+            ),
+          );
+        }
       });
     }
   }
