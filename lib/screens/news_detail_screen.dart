@@ -41,6 +41,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final dateFormat = DateFormat('MMM dd, yyyy HH:mm');
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
@@ -68,11 +69,11 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   return Container(
                     width: double.infinity,
                     height: 250,
-                    color: Colors.grey[800],
-                    child: const Icon(
+                    color: isDark ? Colors.grey[800] : Colors.grey[300],
+                    child: Icon(
                       Icons.article,
                       size: 80,
-                      color: Colors.white24,
+                      color: isDark ? Colors.white24 : Colors.black12,
                     ),
                   );
                 },
@@ -87,7 +88,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   Text(
                     widget.article.title,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: Colors.white,
+                          color: isDark ? Colors.white : Colors.black87,
                           fontWeight: FontWeight.bold,
                         ),
                   ),
@@ -99,13 +100,13 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                       Icon(
                         Icons.access_time,
                         size: 16,
-                        color: Colors.white60,
+                        color: isDark ? Colors.white60 : Colors.black54,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         dateFormat.format(widget.article.publishedAt),
-                        style: const TextStyle(
-                          color: Colors.white60,
+                        style: TextStyle(
+                          color: isDark ? Colors.white60 : Colors.black54,
                           fontSize: 14,
                         ),
                       ),
@@ -113,13 +114,13 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                       Icon(
                         Icons.source,
                         size: 16,
-                        color: Colors.white60,
+                        color: isDark ? Colors.white60 : Colors.black54,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         widget.article.source,
-                        style: const TextStyle(
-                          color: Colors.white60,
+                        style: TextStyle(
+                          color: isDark ? Colors.white60 : Colors.black54,
                           fontSize: 14,
                         ),
                       ),
@@ -127,14 +128,14 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   ),
                   const SizedBox(height: 16),
                   
-                  const Divider(color: Colors.white24),
+                  Divider(color: isDark ? Colors.white24 : Colors.black12),
                   const SizedBox(height: 16),
                   
                   // Content
                   Text(
                     widget.article.content,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.white,
+                          color: isDark ? Colors.white : Colors.black87,
                           height: 1.6,
                         ),
                   ),
