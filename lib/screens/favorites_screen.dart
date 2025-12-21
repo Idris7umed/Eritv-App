@@ -48,6 +48,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     if (_isLoading) {
       return const Center(
@@ -60,16 +61,16 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
+            Icon(
               Icons.favorite_border,
               size: 80,
-              color: Colors.white24,
+              color: isDark ? Colors.white24 : Colors.black12,
             ),
             const SizedBox(height: 24),
             Text(
               l10n?.noFavorites ?? 'No favorite channels yet',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Colors.white,
+                    color: isDark ? Colors.white : Colors.black87,
                     fontWeight: FontWeight.bold,
                   ),
             ),
@@ -81,7 +82,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     'Add channels to your favorites by tapping the heart icon.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.white70,
+                      color: isDark ? Colors.white70 : Colors.black54,
                       height: 1.5,
                     ),
               ),
@@ -118,16 +119,16 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             ),
             title: Text(
               channel.name,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: isDark ? Colors.white : Colors.black87,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
             ),
             subtitle: Text(
               channel.id.isNotEmpty ? channel.id : 'Live TV',
-              style: const TextStyle(
-                color: Colors.white60,
+              style: TextStyle(
+                color: isDark ? Colors.white60 : Colors.black54,
                 fontSize: 12,
               ),
             ),

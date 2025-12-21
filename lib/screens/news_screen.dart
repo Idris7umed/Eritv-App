@@ -80,6 +80,7 @@ class _NewsScreenState extends State<NewsScreen> {
   Widget _buildArticleCard(NewsArticle article) {
     final dateFormat = DateFormat('MMM dd, yyyy');
     final isBookmarked = _bookmarkedIds.contains(article.id);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -108,11 +109,11 @@ class _NewsScreenState extends State<NewsScreen> {
                     return Container(
                       width: double.infinity,
                       height: 180,
-                      color: Colors.grey[800],
-                      child: const Icon(
+                      color: isDark ? Colors.grey[800] : Colors.grey[300],
+                      child: Icon(
                         Icons.article,
                         size: 64,
-                        color: Colors.white24,
+                        color: isDark ? Colors.white24 : Colors.black12,
                       ),
                     );
                   },
@@ -130,8 +131,8 @@ class _NewsScreenState extends State<NewsScreen> {
                       Expanded(
                         child: Text(
                           article.title,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: isDark ? Colors.white : Colors.black87,
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
                           ),
@@ -142,7 +143,7 @@ class _NewsScreenState extends State<NewsScreen> {
                       IconButton(
                         icon: Icon(
                           isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                          color: isBookmarked ? Colors.blue : Colors.white60,
+                          color: isBookmarked ? Colors.blue : (isDark ? Colors.white60 : Colors.black54),
                         ),
                         onPressed: () => _toggleBookmark(article.id),
                       ),
@@ -151,8 +152,8 @@ class _NewsScreenState extends State<NewsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     article.description,
-                    style: const TextStyle(
-                      color: Colors.white70,
+                    style: TextStyle(
+                      color: isDark ? Colors.white70 : Colors.black87,
                       fontSize: 14,
                     ),
                     maxLines: 3,
@@ -164,13 +165,13 @@ class _NewsScreenState extends State<NewsScreen> {
                       Icon(
                         Icons.access_time,
                         size: 14,
-                        color: Colors.white60,
+                        color: isDark ? Colors.white60 : Colors.black54,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         dateFormat.format(article.publishedAt),
-                        style: const TextStyle(
-                          color: Colors.white60,
+                        style: TextStyle(
+                          color: isDark ? Colors.white60 : Colors.black54,
                           fontSize: 12,
                         ),
                       ),
@@ -178,13 +179,13 @@ class _NewsScreenState extends State<NewsScreen> {
                       Icon(
                         Icons.source,
                         size: 14,
-                        color: Colors.white60,
+                        color: isDark ? Colors.white60 : Colors.black54,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         article.source,
-                        style: const TextStyle(
-                          color: Colors.white60,
+                        style: TextStyle(
+                          color: isDark ? Colors.white60 : Colors.black54,
                           fontSize: 12,
                         ),
                       ),
@@ -203,12 +204,13 @@ class _NewsScreenState extends State<NewsScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final displayedArticles = _getDisplayedArticles();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       children: [
         // Tab bar
         Container(
-          color: const Color(0xFF1E1E1E),
+          color: isDark ? const Color(0xFF1E1E1E) : Colors.grey[200],
           child: Row(
             children: [
               Expanded(
@@ -230,7 +232,7 @@ class _NewsScreenState extends State<NewsScreen> {
                       l10n?.news ?? 'News',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: _selectedTab == 0 ? Colors.white : Colors.white60,
+                        color: _selectedTab == 0 ? (isDark ? Colors.white : Colors.black87) : (isDark ? Colors.white60 : Colors.black54),
                         fontWeight: _selectedTab == 0 ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
@@ -256,7 +258,7 @@ class _NewsScreenState extends State<NewsScreen> {
                       l10n?.bookmarked ?? 'Bookmarked',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: _selectedTab == 1 ? Colors.white : Colors.white60,
+                        color: _selectedTab == 1 ? (isDark ? Colors.white : Colors.black87) : (isDark ? Colors.white60 : Colors.black54),
                         fontWeight: _selectedTab == 1 ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
@@ -278,7 +280,7 @@ class _NewsScreenState extends State<NewsScreen> {
                       const SizedBox(height: 16),
                       Text(
                         l10n?.loadingNews ?? 'Loading news...',
-                        style: const TextStyle(color: Colors.white70),
+                        style: TextStyle(color: isDark ? Colors.white70 : Colors.black54),
                       ),
                     ],
                   ),
@@ -297,7 +299,7 @@ class _NewsScreenState extends State<NewsScreen> {
                           Text(
                             l10n?.errorLoadingChannels ?? 'Error loading news',
                             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  color: Colors.white,
+                                  color: isDark ? Colors.white : Colors.black87,
                                 ),
                           ),
                           const SizedBox(height: 8),
@@ -306,7 +308,7 @@ class _NewsScreenState extends State<NewsScreen> {
                             child: Text(
                               _error!,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(color: Colors.white70),
+                              style: TextStyle(color: isDark ? Colors.white70 : Colors.black54),
                             ),
                           ),
                           const SizedBox(height: 24),
@@ -326,7 +328,7 @@ class _NewsScreenState extends State<NewsScreen> {
                               Icon(
                                 _selectedTab == 0 ? Icons.article_outlined : Icons.bookmark_border,
                                 size: 80,
-                                color: Colors.white24,
+                                color: isDark ? Colors.white24 : Colors.black12,
                               ),
                               const SizedBox(height: 24),
                               Text(
@@ -334,7 +336,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                     ? (l10n?.noNewsAvailable ?? 'No news available')
                                     : (l10n?.noBookmarks ?? 'No bookmarked articles yet'),
                                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                      color: Colors.white,
+                                      color: isDark ? Colors.white : Colors.black87,
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -347,7 +349,7 @@ class _NewsScreenState extends State<NewsScreen> {
                                         'Bookmark interesting articles to read later.',
                                     textAlign: TextAlign.center,
                                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                          color: Colors.white70,
+                                          color: isDark ? Colors.white70 : Colors.black54,
                                           height: 1.5,
                                         ),
                                   ),
