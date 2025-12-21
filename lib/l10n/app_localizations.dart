@@ -46,6 +46,11 @@ class AppLocalizations {
       'chromecast_info': 'Chromecast functionality is available but requires Google Play Services to be fully configured.',
       'chromecast_future': 'This feature will be fully enabled in a future update.',
       'ok': 'OK',
+      'theme': 'Theme',
+      'select_theme': 'Select Theme',
+      'light': 'Light',
+      'dark': 'Dark',
+      'system': 'System',
     },
     'ti': {
       'app_title': 'ERi-TV',
@@ -79,6 +84,11 @@ class AppLocalizations {
       'chromecast_info': 'Chromecast ተግባር ኣሎ ግን ጉግል ፕለይ ሰርቪስ ምምልማል የድሊ።',
       'chromecast_future': 'እዚ ባህሪ ኣብ መጻኢ ምዕባለ ምሉእ ብምሉእ ክንቀጸል እዩ።',
       'ok': 'እወ',
+      'theme': 'ቅርጺ',
+      'select_theme': 'ቅርጺ መርጽ',
+      'light': 'ብርሃን',
+      'dark': 'ጸልማት',
+      'system': 'ስርዓት',
     },
     'ar': {
       'app_title': 'ERi-TV',
@@ -112,6 +122,11 @@ class AppLocalizations {
       'chromecast_info': 'وظيفة Chromecast متاحة ولكنها تتطلب تكوين خدمات Google Play بشكل كامل.',
       'chromecast_future': 'سيتم تفعيل هذه الميزة بالكامل في تحديث مستقبلي.',
       'ok': 'حسناً',
+      'theme': 'المظهر',
+      'select_theme': 'اختر المظهر',
+      'light': 'فاتح',
+      'dark': 'داكن',
+      'system': 'النظام',
     },
   };
 
@@ -151,6 +166,11 @@ class AppLocalizations {
   String get chromecastInfo => translate('chromecast_info');
   String get chromecastFuture => translate('chromecast_future');
   String get ok => translate('ok');
+  String get theme => translate('theme');
+  String get selectTheme => translate('select_theme');
+  String get light => translate('light');
+  String get dark => translate('dark');
+  String get system => translate('system');
 }
 
 class _AppLocalizationsDelegate

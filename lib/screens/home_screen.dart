@@ -11,11 +11,13 @@ import 'settings_screen.dart';
 class HomeScreen extends StatefulWidget {
   final Locale currentLocale;
   final Function(Locale) onLocaleChange;
+  final Function(ThemeMode) onThemeModeChange;
 
   const HomeScreen({
     super.key,
     required this.currentLocale,
     required this.onLocaleChange,
+    required this.onThemeModeChange,
   });
 
   @override
@@ -30,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoading = true;
   String? _error;
   int _selectedIndex = 0;
+  bool _hasAutoPlayed = false;
 
   @override
   void initState() {
@@ -50,6 +53,22 @@ class _HomeScreenState extends State<HomeScreen> {
         _channels = channels;
         _isLoading = false;
       });
+      
+      // Auto-play the first channel when app opens
+      if (!_hasAutoPlayed && channels.isNotEmpty && mounted) {
+        _hasAutoPlayed = true;
+        // Use WidgetsBinding to ensure the first frame is built before navigating
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PlayerScreen(channel: channels[0]),
+              ),
+            );
+          }
+        });
+      }
     } catch (e) {
       setState(() {
         _error = e.toString();
@@ -72,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildChannelsList() {
     final l10n = AppLocalizations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     if (_isLoading) {
       return Center(
@@ -82,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 16),
             Text(
               l10n?.loadingChannels ?? 'Loading channels...',
-              style: const TextStyle(color: Colors.white70),
+              style: TextStyle(color: isDark ? Colors.white70 : Colors.black54),
             ),
           ],
         ),
@@ -103,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(
               l10n?.errorLoadingChannels ?? 'Error loading channels',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.white,
+                    color: isDark ? Colors.white : Colors.black87,
                   ),
             ),
             const SizedBox(height: 8),
@@ -112,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 _error!,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white70),
+                style: TextStyle(color: isDark ? Colors.white70 : Colors.black54),
               ),
             ),
             const SizedBox(height: 24),
@@ -130,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
       return Center(
         child: Text(
           l10n?.noChannelsAvailable ?? 'No channels available',
-          style: const TextStyle(color: Colors.white70),
+          style: TextStyle(color: isDark ? Colors.white70 : Colors.black54),
         ),
       );
     }
@@ -143,6 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           final channel = _channels![index];
           final isFavorite = _favoriteIds.contains(channel.id);
+          final isDark = Theme.of(context).brightness == Brightness.dark;
           
           return Card(
             margin: const EdgeInsets.only(bottom: 12),
@@ -166,16 +187,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               title: Text(
                 channel.name,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black87,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
               subtitle: Text(
                 channel.id.isNotEmpty ? channel.id : 'Live TV',
-                style: const TextStyle(
-                  color: Colors.white60,
+                style: TextStyle(
+                  color: isDark ? Colors.white60 : Colors.black54,
                   fontSize: 12,
                 ),
               ),
@@ -185,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   IconButton(
                     icon: Icon(
                       isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: isFavorite ? Colors.red : Colors.white60,
+                      color: isFavorite ? Colors.red : (isDark ? Colors.white60 : Colors.black54),
                     ),
                     onPressed: () => _toggleFavorite(channel.id),
                   ),
@@ -231,6 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 MaterialPageRoute(
                   builder: (context) => SettingsScreen(
                     onLocaleChange: widget.onLocaleChange,
+                    onThemeModeChange: widget.onThemeModeChange,
                   ),
                 ),
               );
@@ -258,9 +280,13 @@ class _HomeScreenState extends State<HomeScreen> {
             _loadFavorites(); // Reload favorites when switching to favorites tab
           }
         },
-        backgroundColor: const Color(0xFF1E1E1E),
+        backgroundColor: Theme.of(context).brightness == Brightness.dark 
+            ? const Color(0xFF1E1E1E)
+            : Colors.white,
         selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.white60,
+        unselectedItemColor: Theme.of(context).brightness == Brightness.dark 
+            ? Colors.white60
+            : Colors.black54,
         items: [
           BottomNavigationBarItem(
             icon: const Icon(Icons.live_tv),
