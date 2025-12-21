@@ -122,7 +122,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+          backgroundColor: isDark ? const Color(0xFF1E1E1E) : Theme.of(context).dialogBackgroundColor,
           title: Text(
             l10n?.selectLanguage ?? 'Select Language',
             style: TextStyle(color: isDark ? Colors.white : Colors.black87),
@@ -168,7 +168,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+          backgroundColor: isDark ? const Color(0xFF1E1E1E) : Theme.of(context).dialogBackgroundColor,
           title: Text(
             l10n?.selectTheme ?? 'Select Theme',
             style: TextStyle(color: isDark ? Colors.white : Colors.black87),

@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _hasAutoPlayed = true;
       // Use WidgetsBinding to ensure the first frame is built before navigating
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
+        if (mounted && channels.isNotEmpty) {
           Navigator.push(
             context,
             MaterialPageRoute(
